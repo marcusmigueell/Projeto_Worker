@@ -7,7 +7,7 @@ type WorkerClientRequest = {
 }
 
 export class CreateWorkerClientService {
-    async execute({ name, status }: WorkerClientRequest) {
+    async execute({ name, status }: WorkerClientRequest): Promise<WorkerClients | Error> {
         const repo = getRepository(WorkerClients);
 
         if(await repo.findOne({ name })) return new Error("Client already exists!");

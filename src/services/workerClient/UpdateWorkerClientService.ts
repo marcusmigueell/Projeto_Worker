@@ -15,7 +15,7 @@ export class UpdateWorkerClientService {
 
         if(!workerClient) return new Error("Client does not exists!");
 
-        workerClient.name = name ? name: workerClient.name;
+        workerClient.name = name ? name : workerClient.name;
         status == 0 ? workerClient.status = 0 : workerClient.status = status;
 
         await repo.save(workerClient);
