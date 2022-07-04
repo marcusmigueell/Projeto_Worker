@@ -8,6 +8,7 @@
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js"
   },
   "dependencies": {
+    "child_process": "^1.0.2",
     "express": "^4.17.2",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",

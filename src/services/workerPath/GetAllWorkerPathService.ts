@@ -6,9 +6,7 @@ export class GetAllWorkerPathService {
     async execute(){
         const repo = getRepository(WorkerPath);
 
-        const workerPaths = await repo.find({
-            relations: ["workerClient"]
-        });
+        const workerPaths = await repo.find({ relations: ["workerClient"] })
 
         return workerPaths;
     }
