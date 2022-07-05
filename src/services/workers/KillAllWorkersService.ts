@@ -12,7 +12,7 @@ export class KillAllWorkersService {
         const result = await kill.run({ action });
 
         if(!result)
-            return new Error("All workers are closed!");
+            return new Error("There are no workers running!");
 
         return result;        
     }

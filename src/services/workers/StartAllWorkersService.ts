@@ -5,13 +5,15 @@ type StartWorkersRequest = {
 }
 
 export class StartAllWorkersService {
-    async execute({ action }: StartWorkersRequest): Promise<Boolean | Error> {
+    async execute({ action }: StartWorkersRequest): Promise<Number | Error> {
 
         const start = new StartWorker();
         
-        if(!await start.run({ action }))
+        const result = await start.run({ action });
+
+        if(!result)
             return new Error("Failed to open workers!");
 
-        return true;        
+        return result;        
     }
 }

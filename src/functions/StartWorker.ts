@@ -10,9 +10,10 @@ type RunRequest = {
 }
 
 export class StartWorker {
-    async run({ action, clientId }: RunRequest): Promise<boolean | Error> {
+    async run({ action, clientId }: RunRequest): Promise<Number | Error> {
 
         const repo = getRepository(WorkerPath);
+        var i: number = 0;
 
         if (action == "start" && !clientId) 
             var workers = await repo.find();
@@ -27,14 +28,14 @@ export class StartWorker {
 
         try {
 
-            for (let i = 0; i < workers.length; i++) {
+            for (i; i < workers.length; i++) {
                 await exec(`start ${workers[i].folderPath}${workers[i].folderName}\\${workers[i].workerName}.lnk`)           
             }
 
-            return true;
+            return i;
 
         } catch (error) {
-            return false;
+            return i;
         }
     }
 }

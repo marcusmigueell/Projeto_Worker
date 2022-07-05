@@ -8,7 +8,7 @@ type StartWorkerRequest = {
 }
 
 export class StartOneWorkersService {
-    async execute({ action, name }: StartWorkerRequest): Promise<Boolean | Error> {
+    async execute({ action, name }: StartWorkerRequest): Promise<Number | Error> {
 
         const repo = getRepository(WorkerClients);
 
