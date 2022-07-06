@@ -7,10 +7,11 @@ const exec = util.promisify(require("child_process").exec);
 type RunRequest = {
     action: string;
     clientId?: number;
+    workerName?: string;
 }
 
 export class KillWorker {
-    async run({ action, clientId }: RunRequest): Promise<Number | Error> {
+    async run({ action, clientId, workerName }: RunRequest): Promise<Number | Error> {
 
         const repo = getRepository(WorkerPath);
 
@@ -20,7 +21,7 @@ export class KillWorker {
         var currentStdout: any = [];
         var i: number = 0;
         
-        if (action == "kill" && !clientId) {
+        if (action == "kill" && !clientId && !workerName) {
             
             const { stdout } = await exec(`tasklist /fo csv /NH /fi "imagename eq A2W*"`);
 
@@ -38,12 +39,44 @@ export class KillWorker {
                 
             return i;
             
-        } else if (action == "kill") {
+        } else if (action == "kill" && clientId && !workerName) {
             
             var workers = (await repo.find()).filter(x => x.workerClient_id == clientId);
             
             if(!workers)
                 return new Error("Path does not exists!");
+
+            for (i; i < workers.length; i++) {
+
+                const { stdout } = await exec(`tasklist /fo csv /NH /fi "imagename eq ${workers[i].workerName}.exe*"`);
+                
+                likelyWorkers.push(stdout.split(","));
+
+                if(likelyWorkers[i].length == 5)
+                    currentWorkers.push(likelyWorkers[i]);
+            }
+
+            if(currentWorkers.length > 0){
+                
+                for (i = 0; i < currentWorkers.length; i++) {
+                    pidWorker.push(currentWorkers[i][1]);
+                }
+            
+                for (i = 0; i < pidWorker.length; i++) {
+                    exec(`taskkill /PID ${pidWorker[i]}`);
+                }
+
+                return i;
+            }
+            
+            return i;
+
+        }  else if (action == "kill" && clientId && workerName) {
+            
+            var workers = (await repo.find()).filter(x => x.workerClient_id == clientId && x.workerName == workerName);
+            
+            if(!workers)
+                return new Error("Path or worker name does not exists!");
 
             for (i; i < workers.length; i++) {
 

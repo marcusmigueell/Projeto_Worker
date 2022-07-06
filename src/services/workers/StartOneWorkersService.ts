@@ -4,11 +4,12 @@ import { StartWorker } from "../../functions/StartWorker";
 
 type StartWorkerRequest = {
     action: string;
-    name: string;
+    name?: string;
+    workerName?: string;
 }
 
 export class StartOneWorkersService {
-    async execute({ action, name }: StartWorkerRequest): Promise<Number | Error> {
+    async execute({ action, name, workerName }: StartWorkerRequest): Promise<Number | Error> {
 
         const repo = getRepository(WorkerClients);
 
@@ -21,7 +22,7 @@ export class StartOneWorkersService {
 
         const start = new StartWorker();
 
-        const response = await start.run({ action, clientId });
+        const response = await start.run({ action, clientId, workerName });
 
         return response;
     }

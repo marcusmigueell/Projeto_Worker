@@ -7,22 +7,35 @@ const exec = util.promisify(require("child_process").exec);
 type RunRequest = {
     action: string;
     clientId?: number;
+    workerName?: string;
 }
 
 export class StartWorker {
-    async run({ action, clientId }: RunRequest): Promise<Number | Error> {
+    async run({ action, clientId, workerName }: RunRequest): Promise<Number | Error> {
 
         const repo = getRepository(WorkerPath);
         var i: number = 0;
 
-        if (action == "start" && !clientId) 
+        if (action == "start" && !clientId && !workerName) {
+
             var workers = await repo.find();
-        else if (action == "start") {
+
+        } else if (action == "start" && clientId && !workerName) {
+
             var workers = (await repo.find()).filter(x => x.workerClient_id == clientId);
             
             if(!workers)
                 return new Error("Path does not exists!");
-        }else {
+
+        } else if(action == "start" && clientId && workerName) {
+
+            var workers = (await repo.find()).filter(x => x.workerClient_id == clientId && x.workerName == workerName);
+            
+            if(!workers)
+                return new Error("There is no worker with that name or client does not exists!");
+
+        } else {
+            
             return new Error("Action does not exists!");
         }
 

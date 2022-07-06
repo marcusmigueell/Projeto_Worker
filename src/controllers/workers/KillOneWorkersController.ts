@@ -3,11 +3,11 @@ import { KillOneWorkersService } from "../../services/workers/KillOneWorkersServ
 
 export class KillOneWorkersController {
     async handle(req: Request, res: Response) {
-        const { action, name } = req.body;
+        const { action, name, workerName } = req.body;
 
         const service = new KillOneWorkersService();
 
-        const result = await service.execute({ action, name });
+        const result = await service.execute({ action, name, workerName });
         
         if(result instanceof Error)
             return res.status(400).json(result.message);
