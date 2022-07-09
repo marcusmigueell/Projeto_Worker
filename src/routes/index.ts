@@ -8,6 +8,7 @@ import { CreateWorkerPathController } from "../controllers/workerPath/CreateWork
 import { GetAllWorkerPathController } from "../controllers/workerPath/GetAllWorkerPathController";
 import { GetOneWorkerPathController } from "../controllers/workerPath/GetOneWorkerPathController";
 import { UpdateWorkerPathController } from "../controllers/workerPath/UpdateWorkerPathController";
+import { GetTimeWorkersController } from "../controllers/workers/GetTimeWorkersController";
 import { KillAllWorkersController } from "../controllers/workers/KillAllWorkersController";
 import { KillOneWorkersController } from "../controllers/workers/KillOneWorkersController";
 import { MonitoringWorkersController } from "../controllers/workers/MonitoringWorkersController";
@@ -55,6 +56,11 @@ routes
 routes
     .route("/monitoringWorkers")
     .get(new MonitoringWorkersController().handle);
+
+routes  
+    .route("/timeWorker")
+    .get(new GetTimeWorkersController().handle)
+    .post(new GetTimeWorkersController().handle);
 
 
 export { routes };

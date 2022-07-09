@@ -31,4 +31,10 @@ export class WorkerPath {
 
     @UpdateDateColumn()
     update_at: Date;
+
+    @Column()
+    start_worker: Date;
+
+    @Column()
+    elapsed_time: string;
 }

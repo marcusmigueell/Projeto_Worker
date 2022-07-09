@@ -42,7 +42,16 @@ export class StartWorker {
         try {
 
             for (i; i < workers.length; i++) {
-                await exec(`start ${workers[i].folderPath}${workers[i].folderName}\\${workers[i].workerName}.lnk`)           
+                await exec(`start ${workers[i].folderPath}${workers[i].folderName}\\${workers[i].workerName}.lnk`);
+                
+                workers[i].folderName = workers[i].folderName;
+                workers[i].folderPath = workers[i].folderPath;
+                workers[i].workerName = workers[i].workerName;
+                workers[i].status = workers[i].status;
+                workers[i].workerClient_id = workers[i].workerClient_id;
+                workers[i].start_worker = new Date();
+
+                await repo.save(workers[i]);
             }
 
             return i;

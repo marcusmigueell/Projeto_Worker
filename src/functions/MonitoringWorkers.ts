@@ -38,9 +38,19 @@ export class MonitoringWorkers {
         }
 
         for (i = 0; i < workerPath.length; i++) {
-            if(!currentWorkers.includes(workerPath[i].workerName))
+            if(!currentWorkers.includes(workerPath[i].workerName)) {
+
                 await exec(`start ${workerPath[i].folderPath}${workerPath[i].folderName}\\${workerPath[i].workerName}.lnk`)
-            
+
+                workerPath[i].folderName = workerPath[i].folderName;
+                workerPath[i].folderPath = workerPath[i].folderPath;
+                workerPath[i].workerName = workerPath[i].workerName;
+                workerPath[i].status = workerPath[i].status;
+                workerPath[i].workerClient_id = workerPath[i].workerClient_id;
+                workerPath[i].start_worker = new Date();
+
+                await repo.save(workerPath[i]);
+            }            
         }
 
         return i;
